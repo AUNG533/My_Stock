@@ -1,7 +1,7 @@
 // home.dart
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
-import '../constants/asset.dart';
+import '../../constants/asset.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key, required this.title}) : super(key: key);
