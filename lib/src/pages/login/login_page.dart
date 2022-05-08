@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mystock/src/config/theme.dart' as custom_theme;
 import 'package:mystock/src/pages/login/widgets/header.dart';
 
@@ -23,7 +24,11 @@ class LoginPage extends StatelessWidget {
           Column(
             children: [
               Header(),
-              Text('form'),
+              IconButton(
+                  icon: FaIcon(FontAwesomeIcons.camera),
+                  onPressed: () {
+                    // todo
+                  }),
               Text('forgot password'),
               Text('SSO'),
               Text('register'),
@@ -34,5 +39,3 @@ class LoginPage extends StatelessWidget {
     );
   }
 }
-
-
