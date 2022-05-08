@@ -2,17 +2,63 @@
 // login_form.dart
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:mystock/src/config/theme.dart' as custom_theme;
 
 class LoginForm extends StatelessWidget {
   const LoginForm({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      // ignore: unnecessary_const
-      child: Padding(
-        padding: const EdgeInsets.all(22.0),
-        child: FormInput(),
+    return Stack(
+      children: [
+        buildForm(),
+        _buildSubmitButton(),
+      ],
+    );
+  }
+
+  Card buildForm() => Card(
+        margin: EdgeInsets.only(top: 22, left: 22, right: 22),
+        elevation: 2.0, // เง่า
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0), // โคงมุง
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(22.0),
+          child: FormInput(),
+        ),
+      );
+
+  Container _buildSubmitButton() => Container(
+        width: 220,
+        height: 50,
+        decoration: _boxDecoration(),
+      );
+
+  BoxDecoration _boxDecoration() {
+    const gradientStart = custom_theme.Theme.gradientStart;
+    const gradientEnd = custom_theme.Theme.gradientEnd;
+
+    _boxShadowItem(Color color) => BoxShadow(
+          color: color,
+          offset: Offset(1.0, 6.0),
+          blurRadius: 20.0,
+        );
+
+    return BoxDecoration(
+      borderRadius: BorderRadius.all(Radius.circular(5.0)),
+      boxShadow: [
+        _boxShadowItem(gradientStart),
+        _boxShadowItem(gradientEnd),
+      ],
+      gradient: LinearGradient(
+        colors: const [
+          gradientEnd,
+          gradientStart,
+        ],
+        begin: const FractionalOffset(0.0, 0.0),
+        end: const FractionalOffset(1.0, 1.0),
+        stops: const [0.0, 1.0],
       ),
     );
   }
