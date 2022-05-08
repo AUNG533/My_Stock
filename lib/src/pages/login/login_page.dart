@@ -2,6 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:mystock/src/config/theme.dart' as custom_theme;
+import 'package:mystock/src/pages/login/widgets/header.dart';
+
+import '../../constants/asset.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -19,7 +22,7 @@ class LoginPage extends StatelessWidget {
           ),
           Column(
             children: [
-              Text('header'),
+              Header(),
               Text('form'),
               Text('forgot password'),
               Text('SSO'),
@@ -31,3 +34,5 @@ class LoginPage extends StatelessWidget {
     );
   }
 }
+
+
