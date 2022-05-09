@@ -10,6 +10,7 @@ class LoginForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(
+      alignment: Alignment.bottomCenter,
       children: [
         buildForm(),
         _buildSubmitButton(),
@@ -18,13 +19,13 @@ class LoginForm extends StatelessWidget {
   }
 
   Card buildForm() => Card(
-        margin: EdgeInsets.only(top: 22, left: 22, right: 22),
+        margin: EdgeInsets.only(top: 22, left: 22, right: 22, bottom: 20),
         elevation: 2.0, // เง่า
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.0), // โคงมุง
         ),
         child: Padding(
-          padding: const EdgeInsets.all(22.0),
+          padding: const EdgeInsets.only(top: 20, bottom: 58, left: 20, right: 20),
           child: FormInput(),
         ),
       );
@@ -33,6 +34,17 @@ class LoginForm extends StatelessWidget {
         width: 220,
         height: 50,
         decoration: _boxDecoration(),
+        child: FlatButton(
+          onPressed: () {},
+          child: Text(
+            "LOGIN",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 25.0,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ),
       );
 
   BoxDecoration _boxDecoration() {
