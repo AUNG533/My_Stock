@@ -3,7 +3,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:mystock/src/pages/login/login_page.dart';
-import 'pages/home/home.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
