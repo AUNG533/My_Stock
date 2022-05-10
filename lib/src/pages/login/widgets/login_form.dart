@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 // login_form.dart
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mystock/src/config/theme.dart' as custom_theme;
@@ -82,9 +83,16 @@ class _LoginFormState extends State<LoginForm> {
               _errorPassword = "Mute be at least 8 characters";
             }
             if (_errorUsername == null && _errorPassword == null) {
-              setState(() {
-
+              showLoading();
+              Future.delayed(Duration(seconds: 2)).then((value) {
+                Navigator.pop(context);
+                if (username == 'example@gmail.com' && password == '12345678') {
+                  print('login successfully');
+                } else {
+                  showAlertBar();
+                }
               });
+
             } else {
               setState(() {});
             }
@@ -126,6 +134,30 @@ class _LoginFormState extends State<LoginForm> {
         stops: const [0.0, 1.0],
       ),
     );
+  }
+
+  void showAlertBar() {
+    Flushbar(
+      title: "Username or Password is incorrect",
+      message: 'Please try again.',
+      icon: Icon(
+        Icons.error,
+        size: 28.0,
+        color: Colors.red,
+      ),
+      duration: Duration(seconds: 3),
+      margin: EdgeInsets.all(10),
+      borderRadius: BorderRadius.circular(10),
+    ).show(context);
+  }
+
+  void showLoading(){
+    Flushbar(
+      message: 'Loading...',
+      showProgressIndicator: true,
+     flushbarPosition: FlushbarPosition.TOP,
+      flushbarStyle: FlushbarStyle.GROUNDED,
+    ).show(context);
   }
 }
 
