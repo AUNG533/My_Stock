@@ -5,6 +5,7 @@ import 'package:mystock/src/config/theme.dart' as custom_theme;
 import 'package:mystock/src/pages/login/widgets/header.dart';
 import 'package:mystock/src/pages/login/widgets/login_form.dart';
 
+import '../../constants/asset.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);

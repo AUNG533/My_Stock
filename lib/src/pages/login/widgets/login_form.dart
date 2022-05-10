@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mystock/src/config/theme.dart' as custom_theme;
+import 'package:mystock/src/utils/regex_validator.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({Key? key}) : super(key: key);
@@ -14,6 +15,9 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   TextEditingController? usernameController;
   TextEditingController? passwordController;
+
+  String? _errorUsername;
+  String? _errorPassword;
 
   @override
   void initState() {
@@ -52,6 +56,8 @@ class _LoginFormState extends State<LoginForm> {
           child: FormInput(
             usernameController: usernameController,
             passwordController: passwordController,
+            errorUsername: _errorUsername ?? '',
+            errorPassword: _errorPassword ?? '',
           ),
         ),
       );
@@ -63,8 +69,25 @@ class _LoginFormState extends State<LoginForm> {
         // ignore: deprecated_member_use
         child: FlatButton(
           onPressed: () {
-            print(usernameController?.text);
-            print(passwordController?.text);
+            String? username = usernameController?.text;
+            String? password = passwordController?.text;
+
+            _errorUsername = null;
+            _errorPassword = null;
+
+            if (!EmailSubmitRegexValidator().isValid(username!)) {
+              _errorUsername = "The Email be a valid email.";
+            }
+            if (password!.length < 8) {
+              _errorPassword = "Mute be at least 8 characters";
+            }
+            if (_errorUsername == null && _errorPassword == null) {
+              setState(() {
+
+              });
+            } else {
+              setState(() {});
+            }
           },
           child: Text(
             "LOGIN",
@@ -109,11 +132,15 @@ class _LoginFormState extends State<LoginForm> {
 class FormInput extends StatefulWidget {
   final TextEditingController? usernameController;
   final TextEditingController? passwordController;
+  final String errorUsername;
+  final String errorPassword;
 
   const FormInput({
     Key? key,
     @required this.usernameController,
     @required this.passwordController,
+    required this.errorUsername,
+    required this.errorPassword,
   }) : super(key: key);
 
   @override
@@ -130,6 +157,7 @@ class _FormInputState extends State<FormInput> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        //_buildUserForm(),
         _buildUsername(),
         Divider(height: 22, thickness: 1, indent: 13, endIndent: 13),
         _buildPassword(),
@@ -140,28 +168,31 @@ class _FormInputState extends State<FormInput> {
   TextFormField _buildPassword() => TextFormField(
         controller: widget.passwordController,
         decoration: InputDecoration(
-          border: InputBorder.none, // ไม่มีเส้น
-          labelText: 'Password',
-          labelStyle: _textStyle,
-          icon: FaIcon(
-            FontAwesomeIcons.lock,
-            size: 22.0,
-            color: Colors.black54,
-          ),
-        ),
+            border: InputBorder.none,
+            // ไม่มีเส้น
+            labelText: 'Password',
+            labelStyle: _textStyle,
+            icon: FaIcon(
+              FontAwesomeIcons.lock,
+              size: 22.0,
+              color: Colors.black54,
+            ),
+            errorText: widget.errorPassword),
         obscureText: true, // ไม่แสดงตังอักษน
       );
 
   TextFormField _buildUsername() => TextFormField(
         controller: widget.usernameController,
         decoration: InputDecoration(
-          border: InputBorder.none, // ไม่มีเส้น
+          border: InputBorder.none,
+          // ไม่มีเส้น
           labelText: 'Email Address',
           hintText: 'example@gmail.com',
           icon: FaIcon(
             FontAwesomeIcons.envelope,
             size: 22.0,
           ),
+          errorText: widget.errorUsername,
         ),
       );
 }

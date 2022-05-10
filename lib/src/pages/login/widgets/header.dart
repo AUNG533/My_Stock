@@ -9,7 +9,7 @@ class Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 80, bottom: 38),
+      margin: const EdgeInsets.only(top: 80, bottom: 20),
       child: Image.asset(
         Asset.LOGO_IMAGE,
         height: 80,
