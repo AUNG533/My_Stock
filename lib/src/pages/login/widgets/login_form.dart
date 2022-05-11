@@ -69,34 +69,7 @@ class _LoginFormState extends State<LoginForm> {
         decoration: _boxDecoration(),
         // ignore: deprecated_member_use
         child: FlatButton(
-          onPressed: () {
-            String? username = usernameController?.text;
-            String? password = passwordController?.text;
-
-            _errorUsername = null;
-            _errorPassword = null;
-
-            if (!EmailSubmitRegexValidator().isValid(username!)) {
-              _errorUsername = "The Email be a valid email.";
-            }
-            if (password!.length < 8) {
-              _errorPassword = "Mute be at least 8 characters";
-            }
-            if (_errorUsername == null && _errorPassword == null) {
-              showLoading();
-              Future.delayed(Duration(seconds: 2)).then((value) {
-                Navigator.pop(context);
-                if (username == 'example@gmail.com' && password == '12345678') {
-                  print('login successfully');
-                } else {
-                  showAlertBar();
-                }
-              });
-
-            } else {
-              setState(() {});
-            }
-          },
+          onPressed: _onLogin,
           child: Text(
             "LOGIN",
             style: TextStyle(
@@ -151,13 +124,41 @@ class _LoginFormState extends State<LoginForm> {
     ).show(context);
   }
 
-  void showLoading(){
+  void showLoading() {
     Flushbar(
       message: 'Loading...',
       showProgressIndicator: true,
-     flushbarPosition: FlushbarPosition.TOP,
+      flushbarPosition: FlushbarPosition.TOP,
       flushbarStyle: FlushbarStyle.GROUNDED,
     ).show(context);
+  }
+
+  void _onLogin() {
+    String? username = usernameController?.text;
+    String? password = passwordController?.text;
+
+    _errorUsername = null;
+    _errorPassword = null;
+
+    if (!EmailSubmitRegexValidator().isValid(username!)) {
+      _errorUsername = "The Email be a valid email.";
+    }
+    if (password!.length < 8) {
+      _errorPassword = "Mute be at least 8 characters";
+    }
+    if (_errorUsername == null && _errorPassword == null) {
+      showLoading();
+      Future.delayed(Duration(seconds: 2)).then((value) {
+        Navigator.pop(context);
+        if (username == 'example@gmail.com' && password == '12345678') {
+          print('login successfully');
+        } else {
+          showAlertBar();
+        }
+      });
+    } else {
+      setState(() {});
+    }
   }
 }
 
@@ -185,6 +186,15 @@ class _FormInputState extends State<FormInput> {
     color: Colors.black54,
   );
 
+  bool? _obscureTextPassword;
+  FocusNode? _passwordFocusNode;
+
+  @override
+  void initState() {
+    _obscureTextPassword = true;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -198,19 +208,35 @@ class _FormInputState extends State<FormInput> {
   }
 
   TextFormField _buildPassword() => TextFormField(
+        focusNode: _passwordFocusNode,
         controller: widget.passwordController,
         decoration: InputDecoration(
-            border: InputBorder.none,
-            // ไม่มีเส้น
-            labelText: 'Password',
-            labelStyle: _textStyle,
+          border: InputBorder.none,
+          // ไม่มีเส้น
+          labelText: 'Password',
+          labelStyle: _textStyle,
+          icon: FaIcon(
+            FontAwesomeIcons.lock,
+            size: 22.0,
+            color: Colors.black54,
+          ),
+          errorText: widget.errorPassword,
+          suffixIcon: IconButton(
+            onPressed: () {
+              setState(() {
+                _obscureTextPassword = !_obscureTextPassword!;
+              });
+            },
             icon: FaIcon(
-              FontAwesomeIcons.lock,
-              size: 22.0,
+              _obscureTextPassword!
+                  ? FontAwesomeIcons.eye
+                  : FontAwesomeIcons.eyeSlash,
               color: Colors.black54,
+              size: 15.0,
             ),
-            errorText: widget.errorPassword),
-        obscureText: true, // ไม่แสดงตังอักษน
+          ),
+        ),
+        obscureText: _obscureTextPassword!, // ไม่แสดงตังอักษน
       );
 
   TextFormField _buildUsername() => TextFormField(
@@ -226,5 +252,10 @@ class _FormInputState extends State<FormInput> {
           ),
           errorText: widget.errorUsername,
         ),
+        keyboardType: TextInputType.emailAddress,
+        textInputAction: TextInputAction.next,
+        onFieldSubmitted: (String value) {
+          FocusScope.of(context).requestFocus(_passwordFocusNode);
+        },
       );
 }
