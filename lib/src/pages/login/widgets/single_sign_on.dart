@@ -1,4 +1,7 @@
+// single_sing_on.dart
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:mystock/src/single_sign_on_view.dart';
 
 class SingleSingOn extends StatelessWidget {
   const SingleSingOn({Key? key}) : super(key: key);
@@ -8,6 +11,8 @@ class SingleSingOn extends StatelessWidget {
     return Column(
       children: [
         _buildDivider(),
+        const SizedBox(height: 12),
+        _buildSingleOnButton(),
       ],
     );
   }
@@ -42,4 +47,24 @@ class SingleSingOn extends StatelessWidget {
       ],
     );
   }
+
+  Padding _buildSingleOnButton() => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 22),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly, // แบง space เท่ากัน
+          children: SingleSignOnViewModel()
+              .items
+              .map(
+                (item) => FloatingActionButton(
+                  onPressed: item.onPress,
+                  backgroundColor: item.backgroundColor,
+                  child: FaIcon(
+                    item.icon,
+                    color: Colors.white,
+                  ),
+                ),
+              )
+              .toList(),
+        ),
+      );
 }
