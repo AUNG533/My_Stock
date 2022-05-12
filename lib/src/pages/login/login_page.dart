@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mystock/src/config/theme.dart' as custom_theme;
 import 'package:mystock/src/pages/login/widgets/header.dart';
 import 'package:mystock/src/pages/login/widgets/login_form.dart';
+import 'package:mystock/src/pages/login/widgets/single_sign_on.dart';
 
 
 class LoginPage extends StatelessWidget {
@@ -25,7 +26,7 @@ class LoginPage extends StatelessWidget {
               Header(),
               LoginForm(),
               Text('forgot password'),
-              Text('SSO'),
+              SingleSingOn(),
               Text('register'),
             ],
           ),
