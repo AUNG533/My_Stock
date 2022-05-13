@@ -1,7 +1,7 @@
 // single_sing_on.dart
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:mystock/src/single_sign_on_view.dart';
+import 'package:mystock/src/viewmodels/single_sign_on_view.dart';
 
 class SingleSingOn extends StatelessWidget {
   const SingleSingOn({Key? key}) : super(key: key);
