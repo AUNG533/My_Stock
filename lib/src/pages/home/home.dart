@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import '../../constants/asset.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key, required this.title}) : super(key: key);
+  const HomePage({Key? key, required this.name, required this.age})
+      : super(key: key);
 
-  final String title;
+  final String name;
+  final int age;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -17,9 +19,18 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          FlatButton(onPressed: (){
+            if (Navigator.canPop(context)) {
+              Navigator.pop(context);
+            }
+          }, child: Text('back'),),
+          Text(widget.name),
+          Text(widget.age.toString()),
           Image.asset(Asset.LOGO_IMAGE),
-          Image.network('https://www.somkiat.cc/wp-content/uploads/2021/08/flutter-1024x486.png'),
+          Image.network(
+              'https://www.somkiat.cc/wp-content/uploads/2021/08/flutter-1024x486.png'),
         ],
       ),
     );

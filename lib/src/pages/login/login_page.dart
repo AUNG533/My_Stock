@@ -26,14 +26,20 @@ class LoginPage extends StatelessWidget {
                 Header(),
                 LoginForm(),
                 SizedBox(height: 28),
-                _buildFlatButton('Forgot password', onPressed: () {
-                  // todo
-                }),
+                _buildFlatButton(
+                  'Forgot password',
+                  onPressed: () {
+                    // todo
+                  },
+                ),
                 SingleSingOn(),
                 SizedBox(height: 28),
-                _buildFlatButton("Don't have an Account", onPressed: () {
-                  // todo
-                }),
+                _buildFlatButton(
+                  "Don't have an Account",
+                  onPressed: () {
+                    // todo
+                  },
+                ),
                 SizedBox(height: 80)
               ],
             ),
@@ -46,7 +52,7 @@ class LoginPage extends StatelessWidget {
   FlatButton _buildFlatButton(String text,
           {required VoidCallback onPressed, double fontSize = 16}) =>
       FlatButton(
-        onPressed:  onPressed,
+        onPressed: onPressed,
         child: Text(
           text,
           style: TextStyle(
