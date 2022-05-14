@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mystock/src/config/theme.dart' as custom_theme;
 import 'package:mystock/src/config/route.dart' as custom_rout;
+import 'package:mystock/src/constants/setting.dart';
 import 'package:mystock/src/utils/regex_validator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({Key? key}) : super(key: key);
@@ -150,7 +152,7 @@ class _LoginFormState extends State<LoginForm> {
     }
     if (_errorUsername == null && _errorPassword == null) {
       showLoading();
-      Future.delayed(Duration(seconds: 2)).then((value) {
+      Future.delayed(Duration(seconds: 2)).then((value) async {
         Navigator.pop(context);
         if (username == 'example@gmail.com' && password == '12345678') {
           // Navigator.pushReplacement(
@@ -159,11 +161,10 @@ class _LoginFormState extends State<LoginForm> {
           //     builder: (context) => HomePage(name: 'Non', age: 40,),
           //   ),
           // );
-          Navigator.pushReplacementNamed(context, custom_rout.Route.home,
-              arguments: {
-                'name': 'iblurblur',
-                'age': 30,
-              });
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setString(Setting.TOKEN_PREF, 'asdfasdfasdf');
+          prefs.setString(Setting.USERNAME_PREF, username);
+          Navigator.pushReplacementNamed(context, custom_rout.Route.home);
         } else {
           showAlertBar();
         }

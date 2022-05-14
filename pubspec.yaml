@@ -38,6 +38,7 @@ dependencies:
   # my dependencies
   font_awesome_flutter: ^10.1.0
   another_flushbar: ^1.10.28
+  shared_preferences: ^2.0.15
 
 dev_dependencies:
   flutter_test:
