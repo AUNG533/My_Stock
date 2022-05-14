@@ -5,7 +5,7 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mystock/src/config/theme.dart' as custom_theme;
-import 'package:mystock/src/pages/home/home.dart';
+import 'package:mystock/src/config/route.dart' as custom_rout;
 import 'package:mystock/src/utils/regex_validator.dart';
 
 class LoginForm extends StatefulWidget {
@@ -153,12 +153,17 @@ class _LoginFormState extends State<LoginForm> {
       Future.delayed(Duration(seconds: 2)).then((value) {
         Navigator.pop(context);
         if (username == 'example@gmail.com' && password == '12345678') {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => HomePage(name: 'Non', age: 40,),
-            ),
-          );
+          // Navigator.pushReplacement(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => HomePage(name: 'Non', age: 40,),
+          //   ),
+          // );
+          Navigator.pushReplacementNamed(context, custom_rout.Route.home,
+              arguments: {
+                'name': 'iblurblur',
+                'age': 30,
+              });
         } else {
           showAlertBar();
         }

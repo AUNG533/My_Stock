@@ -4,11 +4,8 @@ import 'package:flutter/material.dart';
 import '../../constants/asset.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key, required this.name, required this.age})
+  const HomePage({Key? key})
       : super(key: key);
-
-  final String name;
-  final int age;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -17,6 +14,16 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
+
+    final Object? argument = ModalRoute.of(context)?.settings.arguments;
+    // final models = Map<String, Object>.from(argument);
+    //
+    // var name = '-';
+    // var age = 0;
+    // if (argument['name'] is int) {
+    //   name = rug
+    // }
+
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -26,8 +33,8 @@ class _HomePageState extends State<HomePage> {
               Navigator.pop(context);
             }
           }, child: Text('back'),),
-          Text(widget.name),
-          Text(widget.age.toString()),
+          // Text(widget.name),
+          // Text(widget.age.toString()),
           Image.asset(Asset.LOGO_IMAGE),
           Image.network(
               'https://www.somkiat.cc/wp-content/uploads/2021/08/flutter-1024x486.png'),
