@@ -1,8 +1,11 @@
 // home.dart
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
+import 'package:mystock/src/pages/home/widgets/chart.dart';
 import 'package:mystock/src/pages/home/widgets/custom_drawer.dart';
-import '../../constants/asset.dart';
+import 'package:mystock/src/pages/home/widgets/custom_tabbar.dart';
+import 'package:mystock/src/pages/home/widgets/report.dart';
+import 'package:mystock/src/pages/home/widgets/stock.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -14,12 +17,22 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Stock Workshop'),
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Stock Workshop'),
+          bottom: CustomTabBar(),
+        ),
+        drawer: CustomDrawer(),
+        body: TabBarView(
+          children: [
+            Stock(),
+            Chart(),
+            Report(),
+          ],
+        ),
       ),
-      drawer: CustomDrawer(),
-      body: Image.asset(Asset.LOGO_IMAGE),
     );
   }
 }
