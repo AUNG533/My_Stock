@@ -1,5 +1,6 @@
 // custom_drawer.dart
-// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: non_constant_identifier_names, prefer_const_constructors
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mystock/src/config/route.dart' as custom_route;
@@ -93,9 +94,19 @@ class _CustomDrawerState extends State<CustomDrawer> {
               fontSize: 18.0,
             ),
           ),
-          leading: FaIcon(
-            item.icon,
-            color: item.iconColor,
+          leading: Badge(
+            showBadge: item.icon == FontAwesomeIcons.inbox,
+            badgeContent: Text(
+              '99',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 12,
+              ),
+            ),
+            child: FaIcon(
+              item.icon,
+              color: item.iconColor,
+            ),
           ),
           onTap: () {
             item.onTap(context);
