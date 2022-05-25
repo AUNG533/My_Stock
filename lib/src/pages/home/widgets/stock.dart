@@ -10,9 +10,9 @@ class Stock extends StatelessWidget {
   Widget build(BuildContext context) {
     return GridView.builder(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 0.8,
-        crossAxisSpacing: 5,
+        crossAxisCount: 2, // จำนวน Column
+        childAspectRatio: 0.8, // ขนาดแต่ละ item
+        crossAxisSpacing: 5, // ระวาง Column
         mainAxisSpacing: 5,
       ),
       itemBuilder: (context, index) => LayoutBuilder(
