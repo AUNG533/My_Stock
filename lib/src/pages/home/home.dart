@@ -1,11 +1,8 @@
 // home.dart
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
-import 'package:mystock/src/pages/home/widgets/chart.dart';
 import 'package:mystock/src/pages/home/widgets/custom_drawer.dart';
 import 'package:mystock/src/pages/home/widgets/custom_tabbar.dart';
-import 'package:mystock/src/pages/home/widgets/report.dart';
-import 'package:mystock/src/pages/home/widgets/stock.dart';
 import 'package:mystock/src/viewmodels/tab_menu_view_model.dart';
 
 class HomePage extends StatefulWidget {
