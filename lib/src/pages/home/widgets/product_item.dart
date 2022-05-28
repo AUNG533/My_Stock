@@ -2,6 +2,7 @@
 // product_item.dart
 import 'package:flutter/material.dart';
 import 'package:mystock/src/utils/format.dart';
+import 'package:mystock/src/widgets/image_not_found.dart';
 
 class ProductItem extends StatelessWidget {
   final double maxHeight;
@@ -11,7 +12,7 @@ class ProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         print('xxx');
       },
       child: Container(
@@ -30,14 +31,19 @@ class ProductItem extends StatelessWidget {
     final height = maxHeight * 0.7;
     final productImage =
         'https://cdn-images-1.medium.com/max/140/1*X5PBTDQQ2Csztg3a6wofIQ@2x.png';
+
+    final stock = 10;
+
     return Stack(
       children: [
-        Image.network(
-          productImage,
-          height: height,
+        SizedBox(
           width: double.infinity,
+          height: height,
+          child: productImage != null && productImage.isNotEmpty
+              ? Image.network(productImage)
+              : ImageNotFound(),
         ),
-        _buildOutOfStock(),
+        if (stock <= 0) _buildOutOfStock(),
       ],
     );
   }
