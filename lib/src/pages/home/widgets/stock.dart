@@ -1,10 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 // stock.dart
 import 'package:flutter/material.dart';
-import 'package:mystock/src/models/post.dart';
+import 'package:mystock/src/models/product.dart';
 import 'package:mystock/src/pages/home/widgets/product_item.dart';
 import 'package:mystock/src/services/network_service.dart';
 
+// Stateless Convert to Stateful
 class Stock extends StatefulWidget {
   const Stock({Key? key}) : super(key: key);
 
@@ -17,12 +18,12 @@ class _StockState extends State<Stock> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Post>>(
-      future: NetworkService().fetchPosts(0),
+    return FutureBuilder<List<Product>>(
+      future: NetworkService().getAllProduct(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          List<Post>? post = snapshot.data;
-          if (post == null || post.isEmpty) {
+          List<Product>? product = snapshot.data;
+          if (product == null || product.isEmpty) {
             return Container(
               margin: EdgeInsets.only(top: 22),
               alignment: Alignment.topCenter,
@@ -33,7 +34,7 @@ class _StockState extends State<Stock> {
             onRefresh: () async {
               setState(() {});
             },
-            child: _buildProductGridView(post),
+            child: _buildProductGridView(product),
           );
         }
         if (snapshot.hasError) {
@@ -50,7 +51,7 @@ class _StockState extends State<Stock> {
     );
   }
 
-  GridView _buildProductGridView(List<Post> post) {
+  GridView _buildProductGridView(List<Product> product) {
     return GridView.builder(
       padding: EdgeInsets.only(
         left: _spacing,
@@ -66,10 +67,10 @@ class _StockState extends State<Stock> {
       ),
       itemBuilder: (context, index) => LayoutBuilder(
         builder: (context, BoxConstraints constraints) {
-          return ProductItem(constraints.maxHeight);
+          return ProductItem(constraints.maxHeight, product: product[index]);
         },
       ),
-      itemCount: post.length,
+      itemCount: product.length,
     );
   }
 }

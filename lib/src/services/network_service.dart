@@ -4,6 +4,9 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:mystock/src/models/post.dart';
+import 'package:mystock/src/models/product.dart';
+
+import '../constants/api.dart';
 
 class NetworkService {
   NetworkService._internal();
@@ -13,6 +16,16 @@ class NetworkService {
   factory NetworkService() => _instance;
 
   static final _dio = Dio();
+
+  Future <List<Product>> getAllProduct() async {
+    final url = '${API.BASE_URL}${API.PRODUCT}';
+    final Response response = await _dio.get(url);
+
+    if (response.statusCode == 200) {
+      return productFromJson(jsonEncode(response.data));
+    }
+    throw Exception('Network failed');
+  }
 
   Future <List<Post>> fetchPosts(int startIndex, {int limit = 10}) async {
     final url = 'https://jsonplaceholder.typicode.com/posts?_start=startIndex&_limit=$limit';
