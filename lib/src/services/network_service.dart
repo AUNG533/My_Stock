@@ -15,10 +15,26 @@ class NetworkService {
 
   factory NetworkService() => _instance;
 
-  static final _dio = Dio();
+  static final _dio = Dio()
+    ..interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) {
+          options.baseUrl = API.BASE_URL;
+          options.connectTimeout = 5000;
+          options.receiveTimeout = 3000;
+          return handler.next(options);
+        },
+        onResponse: (response, handler) {
+          return handler.next(response);
+        },
+        onError: (DioError error, handler) {
+         return handler.next(error);
+        },
+      ),
+    );
 
-  Future <List<Product>> getAllProduct() async {
-    final url = '${API.BASE_URL}${API.PRODUCT}';
+  Future<List<Product>> getAllProduct() async {
+    final url = API.PRODUCT;
     final Response response = await _dio.get(url);
 
     if (response.statusCode == 200) {
@@ -27,8 +43,9 @@ class NetworkService {
     throw Exception('Network failed');
   }
 
-  Future <List<Post>> fetchPosts(int startIndex, {int limit = 10}) async {
-    final url = 'https://jsonplaceholder.typicode.com/posts?_start=startIndex&_limit=$limit';
+  Future<List<Post>> fetchPosts(int startIndex, {int limit = 10}) async {
+    final url =
+        'https://jsonplaceholder.typicode.com/posts?_start=startIndex&_limit=$limit';
     final Response response = await _dio.get(url);
 
     if (response.statusCode == 200) {

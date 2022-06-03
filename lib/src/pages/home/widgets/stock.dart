@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 // stock.dart
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:mystock/src/models/product.dart';
 import 'package:mystock/src/pages/home/widgets/product_item.dart';
@@ -41,7 +42,8 @@ class _StockState extends State<Stock> {
           return Container(
             margin: EdgeInsets.only(top: 22),
             alignment: Alignment.topCenter,
-            child: Text(snapshot.error.toString()),
+            // child: Text(snapshot.error.toString()),
+            child: Text((snapshot.error as DioError).message),
           );
         }
         return Center(
