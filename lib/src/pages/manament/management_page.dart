@@ -2,6 +2,7 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
 import 'package:mystock/src/models/product.dart';
+import 'package:mystock/src/pages/manament/widgets/product_image.dart';
 
 class ManagementPage extends StatefulWidget {
   const ManagementPage({Key? key}) : super(key: key);
@@ -45,7 +46,8 @@ class _ManagementPageState extends State<ManagementPage> {
                     child: _buildStockInput(),
                   ),
                 ],
-              )
+              ),
+              ProductImage(),
             ],
           ),
         ),
