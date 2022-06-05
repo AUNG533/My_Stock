@@ -35,7 +35,6 @@ class _ManagementPageState extends State<ManagementPage> {
           child: Column(
             children: [
               _buildNameInput(),
-              SizedBox(height: _spacing),
               Row(
                 children: [
                   Flexible(
@@ -47,6 +46,7 @@ class _ManagementPageState extends State<ManagementPage> {
                   ),
                 ],
               ),
+              SizedBox(height: _spacing),
               ProductImage(),
             ],
           ),
