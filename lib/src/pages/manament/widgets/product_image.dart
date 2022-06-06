@@ -1,14 +1,14 @@
-// ignore_for_file: prefer_function_declarations_over_variables
+// ignore_for_file: prefer_function_declarations_over_variables, deprecated_member_use
 // product_image.dart
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProductImage extends StatefulWidget {
-  const ProductImage({Key? key}) : super(key: key);
+  final Function(File imageFile) callBack;
+  const ProductImage(this.callBack, {Key? key}) : super(key: key);
 
   @override
   State<ProductImage> createState() => _ProductImageState();
@@ -150,6 +150,7 @@ class _ProductImageState extends State<ProductImage> {
       if (file != null) {
         setState(() {
           _imageFile = File(file.path);
+          widget.callBack(_imageFile!);
         });
       }
     });

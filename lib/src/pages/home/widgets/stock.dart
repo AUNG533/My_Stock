@@ -28,7 +28,9 @@ class _StockState extends State<Stock> {
       floatingActionButton: FloatingActionButton(
         child: FaIcon(FontAwesomeIcons.plus),
         onPressed: () {
-          Navigator.pushNamed(context, custom_route.Route.management);
+          Navigator.pushNamed(context, custom_route.Route.management).then((value) {
+            setState(() {});
+          });
         },
       ),
     );

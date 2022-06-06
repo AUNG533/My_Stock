@@ -1,8 +1,13 @@
 // management_page.dart
 // ignore_for_file: prefer_const_constructors
+import 'dart:io';
+
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mystock/src/models/product.dart';
 import 'package:mystock/src/pages/manament/widgets/product_image.dart';
+import 'package:mystock/src/services/network_service.dart';
 
 class ManagementPage extends StatefulWidget {
   const ManagementPage({Key? key}) : super(key: key);
@@ -16,6 +21,7 @@ class _ManagementPageState extends State<ManagementPage> {
   final _spacing = 12.0;
   late Product _product;
   final _form = GlobalKey<FormState>();
+  File? _imageFile;
 
   @override
   void initState() {
@@ -48,12 +54,18 @@ class _ManagementPageState extends State<ManagementPage> {
                 ],
               ),
               SizedBox(height: _spacing),
-              ProductImage(),
+              ProductImage(
+                callBack,
+              ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  callBack(File imageFile) {
+    _imageFile = imageFile;
   }
 
   AppBar _buildAppBar() {
@@ -64,9 +76,7 @@ class _ManagementPageState extends State<ManagementPage> {
           textColor: Colors.white,
           onPressed: () {
             _form.currentState?.save();
-            print(_product.name);
-            print(_product.price);
-            print(_product.stock);
+            addProduct();
           },
           child: Text('submit'),
         ),
@@ -112,4 +122,35 @@ class _ManagementPageState extends State<ManagementPage> {
           _product.stock = value!.isEmpty ? 0 : int.parse(value);
         },
       );
+
+  void addProduct() {
+    NetworkService()
+        .addProduct(_product, imageFile: _imageFile!)
+        .then((result) {
+      Navigator.pop(context);
+      showAlertBar(result);
+    }).catchError((error) {
+      showAlertBar(
+        error.toString(),
+        icon: FontAwesomeIcons.timesCircle,
+        color: Colors.red,
+      );
+    });
+  }
+
+  void showAlertBar(String message,
+      {IconData icon = FontAwesomeIcons.checkCircle,
+      Color color = Colors.green}) {
+    Flushbar(
+      message: message,
+      icon: FaIcon(
+        icon,
+        size: 28.0,
+        color: color,
+      ),
+      flushbarPosition: FlushbarPosition.TOP,
+      duration: Duration(seconds: 3),
+      flushbarStyle: FlushbarStyle.GROUNDED,
+    ).show(context);
+  }
 }
