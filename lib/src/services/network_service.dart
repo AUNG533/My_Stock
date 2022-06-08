@@ -69,7 +69,7 @@ class NetworkService {
   }
 
   // EditProduct
-  Future<String> editProduct(Product product, {required File imageFile}) async {
+  Future<String> editProduct(Product product, {File? imageFile}) async {
     final url = '${API.PRODUCT}/${product.id}';
 
     FormData data = FormData.fromMap(

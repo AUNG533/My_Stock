@@ -26,7 +26,7 @@ class _ManagementPageState extends State<ManagementPage> {
   @override
   void initState() {
     _isEdit = false;
-    _product = Product(id: 0);
+    _product = Product(id: 0, image: '');
     super.initState();
   }
 
@@ -63,7 +63,7 @@ class _ManagementPageState extends State<ManagementPage> {
                 SizedBox(height: _spacing),
                 ProductImage(
                   callBack,
-                  _product!.image!,
+                  _product!.image,
                 ),
                 SizedBox(height: 80),
               ],

@@ -11,7 +11,8 @@ class ProductImage extends StatefulWidget {
   final Function(File imageFile) callBack;
   final String imageURL;
 
-  const ProductImage(this.callBack, this.imageURL, {Key? key}) : super(key: key);
+  const ProductImage(this.callBack, this.imageURL, {Key? key})
+      : super(key: key);
 
   @override
   State<ProductImage> createState() => _ProductImageState();
@@ -69,12 +70,16 @@ class _ProductImageState extends State<ProductImage> {
           height: 350,
           child: child,
         );
-    return _imageURL != null ? container(Image.network('${API.IMAGE_URL}/$_imageURL')) : Stack(
-      children: [
-        container(Image.file(_imageFile!)),
-        _buildDeleteImageButton(),
-      ],
-    );
+    return _imageURL != null
+        ? container(
+            Image.network('${API.IMAGE_URL}/$_imageURL'),
+          )
+        : Stack(
+            children: [
+              container(Image.file(_imageFile!)),
+              _buildDeleteImageButton(),
+            ],
+          );
   }
 
   Positioned _buildDeleteImageButton() => Positioned(

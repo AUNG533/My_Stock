@@ -1,3 +1,4 @@
+// product_image.dart
 // To parse this JSON data, do
 //
 //     final welcome = welcomeFromJson(jsonString);
@@ -12,7 +13,7 @@ class Product {
   Product({
     required this.id,
     this.name,
-    this.image,
+    required this.image,
     this.stock,
     this.price,
     this.createdAt,
@@ -21,7 +22,7 @@ class Product {
 
   int id;
   String? name;
-  String? image;
+  String image;
   int? stock;
   int? price;
   DateTime? createdAt;
