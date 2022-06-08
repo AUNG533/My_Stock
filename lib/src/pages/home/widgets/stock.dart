@@ -27,8 +27,10 @@ class _StockState extends State<Stock> {
       // add floatingActionButton
       floatingActionButton: FloatingActionButton(
         child: FaIcon(FontAwesomeIcons.plus),
+        //
         onPressed: () {
-          Navigator.pushNamed(context, custom_route.Route.management).then((value) {
+          Navigator.pushNamed(context, custom_route.Route.management)
+              .then((value) {
             setState(() {});
           });
         },
@@ -71,7 +73,7 @@ class _StockState extends State<Stock> {
     );
   }
 
-  GridView _buildProductGridView(List<Product> product) {
+  GridView _buildProductGridView(List<Product> products) {
     return GridView.builder(
       padding: EdgeInsets.only(
         left: _spacing,
@@ -87,10 +89,24 @@ class _StockState extends State<Stock> {
       ),
       itemBuilder: (context, index) => LayoutBuilder(
         builder: (context, BoxConstraints constraints) {
-          return ProductItem(constraints.maxHeight, product: product[index]);
+          final product = products[index];
+          return ProductItem(
+            constraints.maxHeight,
+            product: product,
+            // เปิดหน้า management และส่ง product
+            onTap: () {
+              Navigator.pushNamed(
+                context,
+                custom_route.Route.management,
+                arguments: product,
+              ).then((value) {
+                setState(() {});
+              });
+            },
+          );
         },
       ),
-      itemCount: product.length,
+      itemCount: products.length,
     );
   }
 }

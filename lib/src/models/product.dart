@@ -10,7 +10,7 @@ String productToJson(List<Product> data) => json.encode(List<dynamic>.from(data.
 
 class Product {
   Product({
-    this.id,
+    required this.id,
     this.name,
     this.image,
     this.stock,
@@ -19,7 +19,7 @@ class Product {
     this.updatedAt,
   });
 
-  int? id;
+  int id;
   String? name;
   String? image;
   int? stock;

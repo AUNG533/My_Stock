@@ -19,45 +19,55 @@ class ManagementPage extends StatefulWidget {
 class _ManagementPageState extends State<ManagementPage> {
   late bool _isEdit;
   final _spacing = 12.0;
-  late Product _product;
+  Product? _product;
   final _form = GlobalKey<FormState>();
   File? _imageFile;
 
   @override
   void initState() {
     _isEdit = false;
-    _product = Product();
+    _product = Product(id: 0);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final Object? arguments = ModalRoute.of(context)?.settings.arguments; // รับค่า จาก product_item
+    if (arguments is Product) {
+      _isEdit = true;
+      _product = arguments; // ค่า product จาก product_item
+    }
+
     return Scaffold(
       appBar: _buildAppBar(), // ExtractMethod AppBar
-      body: Form(
-        key: _form,
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            children: [
-              _buildNameInput(),
-              SizedBox(height: _spacing),
-              Row(
-                children: [
-                  Flexible(
-                    child: _buildPriceInput(),
-                  ),
-                  SizedBox(width: _spacing),
-                  Flexible(
-                    child: _buildStockInput(),
-                  ),
-                ],
-              ),
-              SizedBox(height: _spacing),
-              ProductImage(
-                callBack,
-              ),
-            ],
+      body: SingleChildScrollView(
+        child: Form(
+          key: _form,
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              children: [
+                _buildNameInput(),
+                SizedBox(height: _spacing),
+                Row(
+                  children: [
+                    Flexible(
+                      child: _buildPriceInput(),
+                    ),
+                    SizedBox(width: _spacing),
+                    Flexible(
+                      child: _buildStockInput(),
+                    ),
+                  ],
+                ),
+                SizedBox(height: _spacing),
+                ProductImage(
+                  callBack,
+                  _product!.image!,
+                ),
+                SizedBox(height: 80),
+              ],
+            ),
           ),
         ),
       ),
@@ -70,13 +80,19 @@ class _ManagementPageState extends State<ManagementPage> {
 
   AppBar _buildAppBar() {
     return AppBar(
-      title: Text(_isEdit ? 'Edit Product' : 'Create Product'),
+      title: Text(_isEdit ? 'Edit Product' : 'Create Product'), // แสดง title ตาม event
       actions: [
+        if (_isEdit) _buildDeleteButton(),
         FlatButton(
           textColor: Colors.white,
           onPressed: () {
             _form.currentState?.save();
-            addProduct();
+            FocusScope.of(context).requestFocus(FocusNode()); // ปิก keybord
+            if (_isEdit) {
+              editProduct();
+            } else {
+              addProduct();
+            }
           },
           child: Text('submit'),
         ),
@@ -101,31 +117,34 @@ class _ManagementPageState extends State<ManagementPage> {
       );
 
   TextFormField _buildNameInput() => TextFormField(
+        initialValue: _product!.name,
         decoration: inputStyle('name'),
         onSaved: (String? value) {
-          _product.name = value!.isEmpty ? '-' : value;
+          _product!.name = value!.isEmpty ? '-' : value;
         },
       );
 
   TextFormField _buildPriceInput() => TextFormField(
+        initialValue: _product!.price?.toString(),
         decoration: inputStyle('price'),
         keyboardType: TextInputType.number,
         onSaved: (String? value) {
-          _product.price = value!.isEmpty ? 0 : int.parse(value);
+          _product!.price = value!.isEmpty ? 0 : int.parse(value);
         },
       );
 
   TextFormField _buildStockInput() => TextFormField(
+        initialValue: _product!.stock?.toString(),
         decoration: inputStyle('stock'),
         keyboardType: TextInputType.number,
         onSaved: (String? value) {
-          _product.stock = value!.isEmpty ? 0 : int.parse(value);
+          _product!.stock = value!.isEmpty ? 0 : int.parse(value);
         },
       );
 
   void addProduct() {
     NetworkService()
-        .addProduct(_product, imageFile: _imageFile!)
+        .addProduct(_product!, imageFile: _imageFile)
         .then((result) {
       Navigator.pop(context);
       showAlertBar(result);
@@ -152,5 +171,69 @@ class _ManagementPageState extends State<ManagementPage> {
       duration: Duration(seconds: 3),
       flushbarStyle: FlushbarStyle.GROUNDED,
     ).show(context);
+  }
+
+  IconButton _buildDeleteButton() => IconButton(
+        icon: Icon(Icons.delete_outline),
+        onPressed: () {
+          // Dialog แจ้งเติม
+          showDialog<void>(
+            context: context,
+            builder: (BuildContext dialogContext) {
+              return AlertDialog(
+                title: Text('Delete Product'),
+                content: Text('Are you sure you want to delete?'),
+                actions: <Widget>[
+                  // ปุงยกเลิก
+                  FlatButton(
+                    child: Text('cancel'),
+                    onPressed: () {
+                      Navigator.of(dialogContext).pop(); // Dismiss alert dialog
+                    },
+                  ),
+                  // ปุงตกลง ลบ
+                  FlatButton(
+                    child: Text(
+                      'ok',
+                      style: TextStyle(color: Colors.red),
+                    ),
+                    onPressed: () { // ออก และ เรียอกใช้ function delete
+                      Navigator.of(dialogContext).pop();
+                      deleteProduct();  // Dismiss alert dialog
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        },
+      );
+
+  void deleteProduct() {
+    NetworkService().deleteProduct(_product!.id).then((result) {
+      Navigator.pop(context);
+      showAlertBar(result);
+    }).catchError((error) {
+      showAlertBar(
+        error.toString(),
+        icon: FontAwesomeIcons.timesCircle,
+        color: Colors.red,
+      );
+    });
+  }
+
+  void editProduct() {
+    NetworkService()
+        .editProduct(_product!, imageFile: _imageFile!)
+        .then((result) {
+      Navigator.pop(context);
+      showAlertBar(result);
+    }).catchError((error) {
+      showAlertBar(
+        error.toString(),
+        icon: FontAwesomeIcons.timesCircle,
+        color: Colors.red,
+      );
+    });
   }
 }

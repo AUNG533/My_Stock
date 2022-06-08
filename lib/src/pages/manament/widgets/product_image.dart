@@ -5,10 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mystock/src/constants/api.dart';
 
 class ProductImage extends StatefulWidget {
   final Function(File imageFile) callBack;
-  const ProductImage(this.callBack, {Key? key}) : super(key: key);
+  final String imageURL;
+
+  const ProductImage(this.callBack, this.imageURL, {Key? key}) : super(key: key);
 
   @override
   State<ProductImage> createState() => _ProductImageState();
@@ -17,6 +20,19 @@ class ProductImage extends StatefulWidget {
 class _ProductImageState extends State<ProductImage> {
   File? _imageFile;
   final _picker = ImagePicker();
+  String? _imageURL;
+
+  @override
+  void initState() {
+    _imageURL = widget.imageURL;
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _imageFile?.delete();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +59,7 @@ class _ProductImageState extends State<ProductImage> {
   }
 
   dynamic _buildPreviewImage() {
-    if (_imageFile == null) {
+    if ((_imageURL == null || _imageURL!.isEmpty) && _imageFile == null) {
       return const SizedBox();
     }
     final container = (Widget child) => Container(
@@ -53,7 +69,7 @@ class _ProductImageState extends State<ProductImage> {
           height: 350,
           child: child,
         );
-    return Stack(
+    return _imageURL != null ? container(Image.network('${API.IMAGE_URL}/$_imageURL')) : Stack(
       children: [
         container(Image.file(_imageFile!)),
         _buildDeleteImageButton(),
@@ -67,6 +83,7 @@ class _ProductImageState extends State<ProductImage> {
           onPressed: () {
             setState(() {
               _imageFile = null;
+              // widget.callBack(null);
             });
           },
           icon: const Icon(
@@ -151,6 +168,7 @@ class _ProductImageState extends State<ProductImage> {
         setState(() {
           _imageFile = File(file.path);
           widget.callBack(_imageFile!);
+          _imageURL = null;
         });
       }
     });

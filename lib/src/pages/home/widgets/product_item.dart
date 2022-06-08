@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:mystock/src/models/product.dart';
 import 'package:mystock/src/utils/format.dart';
 import 'package:mystock/src/widgets/image_not_found.dart';
-
 import '../../../constants/api.dart';
 
 class ProductItem extends StatelessWidget {
@@ -12,14 +11,15 @@ class ProductItem extends StatelessWidget {
 
   final Product product;
 
-  const ProductItem(this.maxHeight, {Key? key, required this.product}) : super(key: key);
+  final VoidCallback onTap;
+
+  const ProductItem(this.maxHeight, {Key? key, required this.product, required this.onTap})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        print('xxx');
-      },
+      onTap: onTap,
       child: Container(
         color: Colors.white,
         child: Column(
@@ -58,7 +58,7 @@ class ProductItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-               product.name!,
+                product.name!,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
